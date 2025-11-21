@@ -15,7 +15,7 @@ type Task struct {
 	CreatedAt time.Time `json:"created_at"`
 }
 
-const fileName = "tasks.json"
+var fileName = "tasks.json"
 
 // Add creates a new task and saves it.
 func Add(title string) (Task, error) {
