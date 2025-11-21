@@ -40,26 +40,12 @@ func main() {
 		fmt.Printf("Task added: %d: %s\n", t.ID, t.Title)
 
 	case "list":
-		tasks, err := task.List()
-		if err != nil {
-			fmt.Printf("Error loading tasks: %v\n", err)
-			os.Exit(1)
-		}
+		listCmd := flag.NewFlagSet("list", flag.ExitOnError)
+		status := listCmd.String("status", "", "Filter tasks by status (done/todo)")
 
-		if len(tasks) == 0 {
-			fmt.Println("No pending tasks.")
-			return
-		}
+		listCmd.Parse(os.Args[2:])
 
-		fmt.Println("Task list:")
-		for _, t := range tasks {
-			status := "[ ]"
-			if t.Done {
-				status = "[x]"
-			}
-			// Format: [ ] 1: Buy coffee (created: 2025-11-21 13:00)
-			fmt.Printf("%s %d: %s (created: %s)\n", status, t.ID, t.Title, t.CreatedAt.Format("2006-01-02 15:04"))
-		}
+		handleList(*status)
 
 	case "complete":
 		completeCmd := flag.NewFlagSet("complete", flag.ExitOnError)
@@ -111,6 +97,38 @@ func main() {
 	default:
 		fmt.Printf("Unknown command: %s\n", os.Args[1])
 		os.Exit(1)
+	}
+}
+
+// handleList displays all tasks, optionally filtered by status.
+func handleList(statusFilter string) {
+	tasks, err := task.List()
+	if err != nil {
+		fmt.Printf("Error loading tasks: %v\n", err)
+		os.Exit(1)
+	}
+
+	if len(tasks) == 0 {
+		fmt.Println("No tasks found.")
+		return
+	}
+
+	fmt.Println("Task list:")
+	for _, t := range tasks {
+		// Filter logic
+		if statusFilter == "done" && !t.Done {
+			continue
+		}
+		if statusFilter == "todo" && t.Done {
+			continue
+		}
+
+		status := "[ ]"
+		if t.Done {
+			status = "[x]"
+		}
+		// Format: [ ] 1: Buy coffee (created: 2025-11-21 13:00)
+		fmt.Printf("%s %d: %s (created: %s)\n", status, t.ID, t.Title, t.CreatedAt.Format("2006-01-02 15:04"))
 	}
 }
 
