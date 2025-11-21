@@ -24,68 +24,76 @@ A simple, robust Command Line Interface (CLI) task manager built with Go. This p
 
 2.  (Optional) Build the binary:
     ```bash
-    go build -o task main.go
+    go build -o task cmd/task-cli/main.go
     ```
-    *If you build the binary, replace `go run main.go` with `./task` in the examples below.*
+    *If you build the binary, replace `go run cmd/task-cli/main.go` with `./task` in the examples below.*
 
 ## Usage
 
 The general syntax is:
 ```bash
-go run main.go <command> [flags]
+go run cmd/task-cli/main.go <command> [flags]
 ```
 
 ### 1. Add a Task
 Create a new task with a title and an optional description.
 
 ```bash
-go run main.go add -title="Learn Go" -desc="Study structs and interfaces"
+go run cmd/task-cli/main.go add -title="Learn Go" -desc="Study structs and interfaces"
 ```
 
 ### 2. List Tasks
 View all tasks.
 
 ```bash
-go run main.go list
+go run cmd/task-cli/main.go list
 ```
 
 **Filter by status:**
 ```bash
-go run main.go list -status=todo  # Show only pending tasks
-go run main.go list -status=done  # Show only completed tasks
+go run cmd/task-cli/main.go list -status=todo  # Show only pending tasks
+go run cmd/task-cli/main.go list -status=done  # Show only completed tasks
 ```
 
 ### 3. View Task Details
 Get detailed information about a specific task, including its description and timestamps.
 
 ```bash
-go run main.go info -id=1
+go run cmd/task-cli/main.go info -id=1
 ```
 
 ### 4. Complete a Task
 Mark a task as done. This records the completion time.
 
 ```bash
-go run main.go complete -id=1
+go run cmd/task-cli/main.go complete -id=1
 ```
 
 ### 5. Delete a Task
 Permanently remove a task.
 
 ```bash
-go run main.go delete -id=1
+go run cmd/task-cli/main.go delete -id=1
 ```
 
 ## Project Structure
 
 ```
 go-task-tracker/
-├── main.go         # Entry point. Handles CLI commands and flags.
+├── cmd/
+│   ├── task-cli/   # CLI Entry point.
+│   │   └── main.go
+│   └── task-api/   # API Entry point.
+│       └── main.go
 ├── go.mod          # Go module definition.
 ├── tasks.json      # Local storage for tasks (created automatically).
-└── task/           # Business logic package.
-    ├── task.go     # Task struct and core functions (Add, List, etc.).
-    └── task_test.go# Unit tests.
+├── internal/       # Internal application code.
+│   ├── task/       # Domain model and repository interface.
+│   ├── store/      # Persistence implementations.
+│   └── api/        # HTTP Handlers and middleware.
+└── task/           # (Legacy) Business logic package for CLI.
+    ├── task.go
+    └── task_test.go
 ```
 
 ## Running Tests
