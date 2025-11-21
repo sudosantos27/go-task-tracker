@@ -24,13 +24,18 @@ func TestAdd(t *testing.T) {
 	os.Remove(fileName)
 
 	title := "Test Task"
-	task, err := Add(title)
+	description := "This is a test description"
+	task, err := Add(title, description)
 	if err != nil {
 		t.Fatalf("Expected no error, got %v", err)
 	}
 
 	if task.Title != title {
 		t.Errorf("Expected title %q, got %q", title, task.Title)
+	}
+
+	if task.Description != description {
+		t.Errorf("Expected description %q, got %q", description, task.Description)
 	}
 
 	if task.ID != 1 {
@@ -51,7 +56,7 @@ func TestAdd(t *testing.T) {
 func TestComplete(t *testing.T) {
 	// Setup
 	os.Remove(fileName)
-	Add("Task to complete")
+	Add("Task to complete", "")
 
 	// Action
 	err := Complete(1)
@@ -64,12 +69,16 @@ func TestComplete(t *testing.T) {
 	if !tasks[0].Done {
 		t.Error("Expected task to be done, but it is not")
 	}
+
+	if tasks[0].CompletedAt == nil {
+		t.Error("Expected CompletedAt to be set, but it is nil")
+	}
 }
 
 func TestDelete(t *testing.T) {
 	// Setup
 	os.Remove(fileName)
-	Add("Task to delete")
+	Add("Task to delete", "")
 
 	// Action
 	err := Delete(1)

@@ -9,16 +9,18 @@ import (
 
 // Task represents a task in our system.
 type Task struct {
-	ID        int       `json:"id"`
-	Title     string    `json:"title"`
-	Done      bool      `json:"done"`
-	CreatedAt time.Time `json:"created_at"`
+	ID          int        `json:"id"`
+	Title       string     `json:"title"`
+	Description string     `json:"description"`
+	Done        bool       `json:"done"`
+	CreatedAt   time.Time  `json:"created_at"`
+	CompletedAt *time.Time `json:"completed_at,omitempty"`
 }
 
 var fileName = "tasks.json"
 
 // Add creates a new task and saves it.
-func Add(title string) (Task, error) {
+func Add(title, description string) (Task, error) {
 	tasks, err := loadTasks()
 	if err != nil {
 		return Task{}, err
@@ -31,10 +33,11 @@ func Add(title string) (Task, error) {
 	}
 
 	newTask := Task{
-		ID:        id,
-		Title:     title,
-		Done:      false,
-		CreatedAt: time.Now(),
+		ID:          id,
+		Title:       title,
+		Description: description,
+		Done:        false,
+		CreatedAt:   time.Now(),
 	}
 
 	tasks = append(tasks, newTask)
@@ -62,6 +65,8 @@ func Complete(id int) error {
 	for i, t := range tasks {
 		if t.ID == id {
 			tasks[i].Done = true
+			now := time.Now()
+			tasks[i].CompletedAt = &now
 			found = true
 			break
 		}

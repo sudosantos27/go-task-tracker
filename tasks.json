@@ -2,13 +2,23 @@
   {
     "id": 1,
     "title": "Buy coffee",
+    "description": "",
     "done": true,
     "created_at": "2025-11-21T13:15:49.322831-03:00"
   },
   {
     "id": 2,
     "title": "Package test",
+    "description": "",
     "done": false,
     "created_at": "2025-11-21T15:38:14.676572-03:00"
+  },
+  {
+    "id": 3,
+    "title": "Detailed Task",
+    "description": "This task has a description",
+    "done": true,
+    "created_at": "2025-11-21T16:30:51.407469-03:00",
+    "completed_at": "2025-11-21T16:30:52.78957-03:00"
   }
 ]
