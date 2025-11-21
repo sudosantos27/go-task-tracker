@@ -96,10 +96,44 @@ go-task-tracker/
     └── task_test.go
 ```
 
+## API Usage
+
+The project includes a REST API server.
+
+### 1. Start the Server
+```bash
+go run cmd/task-api/main.go
+```
+The server will start on `http://localhost:8080`.
+
+To stop the server, press `Ctrl+C` in your terminal.
+
+### 2. Check Health
+```bash
+curl http://localhost:8080/health
+# Output: {"status":"ok"}
+```
+
+### 3. Create a Task
+```bash
+curl -X POST -H "Content-Type: application/json" \
+     -d '{"title":"Learn API Testing", "description":"Use httptest package"}' \
+     http://localhost:8080/tasks
+```
+
+### 4. List Tasks
+```bash
+curl http://localhost:8080/tasks
+```
+
 ## Running Tests
 
-This project includes unit tests for the `task` package. The tests use a temporary file to ensure your real data is not affected.
-
+### CLI Tests
 ```bash
 go test ./task -v
+```
+
+### API Tests
+```bash
+go test ./internal/api -v
 ```
