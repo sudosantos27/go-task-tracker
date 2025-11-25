@@ -20,5 +20,12 @@
     "done": true,
     "created_at": "2025-11-21T16:30:51.407469-03:00",
     "completed_at": "2025-11-21T16:30:52.78957-03:00"
+  },
+  {
+    "id": 4,
+    "title": "Persistent Task",
+    "description": "",
+    "done": false,
+    "created_at": "2025-11-21T20:08:12.760769-03:00"
   }
 ]

@@ -57,6 +57,11 @@ func (h *Handler) CreateTask(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	if len(input.Title) > 100 {
+		http.Error(w, "Title is too long (max 100 chars)", http.StatusBadRequest)
+		return
+	}
+
 	newTask := task.Task{
 		Title:       input.Title,
 		Description: input.Description,
